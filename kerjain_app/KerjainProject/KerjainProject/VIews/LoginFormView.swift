@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct LoginFormView: View {
-    @State private var email: String = ""
-    @State private var password: String = ""
+    @StateObject var viewModel = LoginViewViewModel()
 
     var body: some View {
         VStack(spacing: 6) {
@@ -18,7 +17,7 @@ struct LoginFormView: View {
                     VStack(alignment: .leading, spacing: 6) {
                         Text("Email")
                             .font(.headline)
-                        TextField("Input your email address", text: $email)
+                        TextField("Input your email address", text: $viewModel.email)
                             .padding(.vertical, 8)
                             .padding(.horizontal, 16)
                             .background(Color("WhiteColor"))
@@ -32,7 +31,7 @@ struct LoginFormView: View {
                     VStack(alignment: .leading, spacing: 6) {
                         Text("Password")
                             .font(.headline)
-                        SecureField("Input password", text: $password)
+                        SecureField("Input password", text: $viewModel.password)
                             .padding(.vertical, 8)
                             .padding(.horizontal, 16)
                             .background(Color("WhiteColor"))
@@ -42,14 +41,19 @@ struct LoginFormView: View {
                             )
                     }
                 }
-                Button("Login") {
-                    // login action
+                VStack(spacing: 8) {
+                    if !viewModel.errorMessage.isEmpty {
+                        Text(viewModel.errorMessage)
+                            .foregroundColor(.red)
+                            .multilineTextAlignment(.leading)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .font(.subheadline)
+                    }
+
+                    TLButton(title: "Login", background: Color("PrimaryColor")) {
+                        viewModel.login()
+                    }
                 }
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 12)
-                .background(Color.blue)
-                .foregroundColor(.white)
-                .cornerRadius(10)
             }
             
 
@@ -74,6 +78,7 @@ extension View {
         clipShape( RoundedCorner(radius: radius, corners: corners) )
     }
 }
+
 struct RoundedCorner: Shape {
     var radius: CGFloat = 10.0
     var corners: UIRectCorner = .allCorners

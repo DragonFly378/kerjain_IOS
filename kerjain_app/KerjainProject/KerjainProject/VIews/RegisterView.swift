@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct RegisterView: View {
+    @StateObject var viewModel = RegisterViewViewModel()
+
     var body: some View {
         NavigationView{
             ZStack {
@@ -17,30 +19,32 @@ struct RegisterView: View {
                     .edgesIgnoringSafeArea(.all)
 
                 VStack(spacing: 0) {
-                    // Logo + tagline
-                    VStack(spacing: 8) {
-                        Image("logo")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 50)
-                        
-                        VStack(spacing: 4){
-                            Text("Register Now,")
-                                .font(.subheadline)
-                                .foregroundColor(.white)
-                                .bold()
-                            Text("We’ll Worry About Deadlines Later")
-                                .font(.subheadline)
-                                .foregroundColor(.white)
-                                .bold()
-                        }
-                    }.offset(y: 80)
-
+                    HeaderView(
+                        title: "Register Now,",
+                        caption: "We’ll Worry About Deadlines Later"
+                    )
                     Spacer()
-
-                    // Register form
-                    RegisterFormView()
-                    
+                    RegisterFormView(
+                        viewModel: viewModel
+                    )
+                }
+            }
+            // Kunci seluruh UI saat loading
+            .disabled(viewModel.isLoading)
+            // Overlay loader di TENGAH layar
+            .overlay {
+                if viewModel.isLoading {
+                    ZStack {
+                        // semi gelap agar fokus ke loader
+                        ProgressView()
+                            .controlSize(.large)
+                            .padding(24)
+                            .background(.ultraThinMaterial)
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
+                            .shadow(radius: 10)
+                    }
+                    .transition(.opacity)
+                    .animation(.easeInOut, value: viewModel.isLoading)
                 }
             }
         }

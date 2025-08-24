@@ -9,36 +9,25 @@ import SwiftUI
 
 struct LoginView: View {
     var body: some View {
-        NavigationView{
+        NavigationStack {                // ganti NavigationView (opsional, lebih modern)
             ZStack {
-                Image("bg_login")
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .edgesIgnoringSafeArea(.all)
+                GeometryReader { geo in
+                    Image("bg_login")
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: geo.size.width, height: geo.size.height)
+                        .clipped()
+                        .ignoresSafeArea()
+                }
 
                 VStack(spacing: 0) {
-                    // Logo + tagline
-                    VStack(spacing: 8) {
-                        Image("logo")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 50)
-
-                        Text("Manage Time, Not Let It Manage You")
-                            .font(.subheadline)
-                            .foregroundColor(.white)
-                            .bold()
-                    }.offset(y: 80)
-
+                    HeaderView(title: "Manage Time, Not Let It Manage You", caption: "")
                     Spacer()
-
-                    // Login form
                     LoginFormView()
-                    
                 }
             }
+            .navigationBarHidden(true)
         }
-        
     }
 }
 
