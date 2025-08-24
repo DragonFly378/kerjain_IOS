@@ -21,14 +21,14 @@ struct MainView: View {
 //            Text("hello world")
         }
         // Badge kecil di bawah buat ngecek UID
-        .overlay(alignment: .bottom) {
-            Text(viewModel.currentUserId.isEmpty ? "UID: (none)" : "UID: \(viewModel.currentUserId)")
-                .font(.footnote).padding(6)
-                .background(.black.opacity(0.6))
-                .foregroundColor(.white)
-                .clipShape(Capsule())
-                .padding(.bottom, 28)
-        }
+//        .overlay(alignment: .bottom) {
+//            Text(viewModel.currentUserId.isEmpty ? "UID: (none)" : "UID: \(viewModel.currentUserId)")
+//                .font(.footnote).padding(6)
+//                .background(.black.opacity(0.6))
+//                .foregroundColor(.white)
+//                .clipShape(Capsule())
+//                .padding(.bottom, 28)
+//        }
     }
 }
  

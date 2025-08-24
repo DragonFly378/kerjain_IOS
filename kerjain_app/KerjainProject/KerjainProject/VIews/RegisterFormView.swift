@@ -79,8 +79,8 @@ struct RegisterFormView: View {
         }
         .frame(maxWidth: .infinity) // ⬅️ ini wajib agar isi meluas
         .padding(.horizontal)
-        .padding(.bottom, 100)
-        .padding(.top, 40)
+        .padding(.bottom, 80)
+        .padding(.top, 30)
         .background(Color("WhiteColor"))
         .cornerRadius(30, corners: [.topLeft, .topRight])
     }

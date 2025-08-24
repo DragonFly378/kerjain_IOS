@@ -9,9 +9,12 @@ import SwiftUI
 
 struct RegisterView: View {
     @StateObject var viewModel = RegisterViewViewModel()
+    @StateObject private var kb = KeyboardObserver()
+    @FocusState private var focused: Bool    // fokus global; atau pakai enum per field di form
+
 
     var body: some View {
-        NavigationView{
+        NavigationStack{
             ZStack {
                 Image("bg_register")
                     .resizable()
@@ -27,24 +30,30 @@ struct RegisterView: View {
                     RegisterFormView(
                         viewModel: viewModel
                     )
+                    .focused($focused) // di form, ikat TextField/SecureField ke $focused
+                    .frame(maxWidth: .infinity)
+                    .padding(.bottom, kb.height)
+                    .animation(.easeOut(duration: 0.25), value: kb.height)
                 }
             }
-            // Kunci seluruh UI saat loading
             .disabled(viewModel.isLoading)
-            // Overlay loader di TENGAH layar
             .overlay {
                 if viewModel.isLoading {
                     ZStack {
-                        // semi gelap agar fokus ke loader
+                        Color.black.opacity(0.2).ignoresSafeArea()
                         ProgressView()
                             .controlSize(.large)
                             .padding(24)
                             .background(.ultraThinMaterial)
                             .clipShape(RoundedRectangle(cornerRadius: 16))
-                            .shadow(radius: 10)
+                            .shadow(radius: 8)
                     }
-                    .transition(.opacity)
-                    .animation(.easeInOut, value: viewModel.isLoading)
+                }
+            }
+            .toolbar {                // tombol Done untuk nutup keyboard
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    Button("Done") { focused = false }
                 }
             }
         }
